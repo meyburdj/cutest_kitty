@@ -13,8 +13,12 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      animation: {
+        'spin-nine-three': 'rotate-nine-to-three 2s linear infinite',
+      }
     },
   },
   plugins: [],
 };
 export default config;
+
