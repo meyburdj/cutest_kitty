@@ -1,4 +1,3 @@
-
 import HomeClient from './PageClient';
 
 export default async function Home() {
