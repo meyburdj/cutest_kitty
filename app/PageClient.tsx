@@ -3,37 +3,51 @@ import Image from "next/image"
 import CatCard from '@/app/components/CatCard'
 import { useState } from "react"
 
+interface Cat {
+    url: string;
+    score: number;
+}
 
-export default function HomeClient({ groups }) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [catGroups, setCatGroups] = useState(groups)
-    const [size, setSize] = useState('');
-    const [breed, setBreed] = useState('');
-    const [style, setStyle] = useState('');
-    const [cutenessDefiners, setCutenessDefiners] = useState([]);
+interface Group {
+    cats: Cat[];
+}
+
+interface Props {
+    groups: Group[];
+}
+
+export default function HomeClient({ groups = [] }: Props) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [catGroups, setCatGroups] = useState<Group[]>(groups);
+    const [size, setSize] = useState<string>('');
+    const [breed, setBreed] = useState<string>('');
+    const [style, setStyle] = useState<string>('');
+    const [cutenessDefiners, setCutenessDefiners] = useState<string[]>([]);
 
     async function onClick() {
         setIsLoading(true)
         let cat_creation = { size, breed, style }
-        let cute_vission = { cutenessDefiners }
+        let cute_vision = { cutenessDefiners }
         const payload = {
-            cat_creation, cute_vission
+            cat_creation, cute_vision
         }
         console.log('payload', payload)
-        // const res = await fetch('/api/cats', {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(payload),
-        // });
-        // if (res) {
-        //     console.log('res', res.body)
-        //     setCatGroups([...catGroups, res.body])
-        //     setIsLoading(false)
-        // }
+        const res = await fetch('/api/cats', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+        if (res) {
+            const responseData = await res.json()
+            console.log('responseData', responseData)
+            console.log('responseData.groups[0]', responseData.groups[0])
+            setCatGroups([...catGroups, responseData.groups[0]])
+            setIsLoading(false)
+        }
     }
-    function handleCutenessChange(event) {
+    function handleCutenessChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { value, checked } = event.target;
         setCutenessDefiners(prev =>
             checked ? [...prev, value] : prev.filter(cd => cd !== value)
@@ -94,7 +108,7 @@ export default function HomeClient({ groups }) {
                         className="form-select block w-full"
                     >
                         {catBreeds.map(breed => (
-                            <option value={breed}>{breed}</option>
+                            <option key={breed} value={breed}>{breed}</option>
 
                         ))}
                     </select>
