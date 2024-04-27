@@ -61,7 +61,7 @@ export default function HomeClient({ groups = [] }: Props) {
     return (
         <div className="flex flex-col items-center justify-start min-h-screen py-2 pt-5">
             <div className="ml-2 mr-2">
-                Clicking the button generates 5 images of cats using image generation and then rates those cats by "cuteness" using computer vision. Size, breed, and style selectors
+                Clicking the button generates 5 images of cats using image generation and then rates those cats by &quot;cuteness&quot; using computer vision. Size, breed, and style selectors
                 will adjust the image generation prompt. Selecting cuteness definerse will adjust how cuteness is defined by the computer vision.
             </div>
 
