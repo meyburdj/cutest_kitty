@@ -62,10 +62,6 @@ export default function HomeClient({ groups = [] }: Props) {
 
     return (
         <div className="flex flex-col items-center justify-start min-h-screen py-2 pt-5">
-            <div className="ml-2 mr-2">
-                Clicking the button generates 5 images of cats using image generation and then rates those cats by &quot;cuteness&quot; using computer vision. Size, breed, and style selectors
-                will adjust the image generation prompt. Selecting cuteness definerse will adjust how cuteness is defined by the computer vision.
-            </div>
 
             <button onClick={onClick} className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 <div className="flex items-center">
@@ -77,7 +73,7 @@ export default function HomeClient({ groups = [] }: Props) {
                         className={`rounded-sm mr-2 transition-all duration-300 ${isLoading ? 'animate-spin-nine-three' : ''}`}
                     />
 
-                    Kitty Time!
+                    {isLoading ? 'Kitties Loading!' : 'Kitty Time!'}
                     <Image
                         src='kitty_computer.svg'
                         width={30}
