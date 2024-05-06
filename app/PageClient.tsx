@@ -27,12 +27,19 @@ export default function HomeClient({ groups = [] }: Props) {
     const [cutenessDefiners, setCutenessDefiners] = useState<string[]>([]);
 
     async function onClick() {
+        if (catGroups.length >= 150) {
+            alert("Kitties Are Full. Message Jesse For More.");
+            return;
+        }
+
         setIsLoading(true)
+
         let cat_creation = { size, breed, style }
         let cute_vision = { cutenessDefiners }
         const payload = {
             cat_creation, cute_vision
         }
+
         const res = await fetch('/api/cats', {
             method: "POST",
             headers: {
@@ -40,6 +47,12 @@ export default function HomeClient({ groups = [] }: Props) {
             },
             body: JSON.stringify(payload),
         });
+
+        if (res.status === 403) {
+            alert("Kitties Are Full. Message Jesse For More.");
+            setIsLoading(false);
+            return;
+        }
         if (res) {
             const responseData = await res.json()
             setCatGroups([responseData.groups[0], ...catGroups])
@@ -57,10 +70,14 @@ export default function HomeClient({ groups = [] }: Props) {
         'Sphynx', 'Siamese', 'Persian', 'Bengal'
     ]
 
+    const isButtonDisabled = catGroups.length >= 150;
+
     return (
         <div className="flex flex-col items-center justify-start min-h-screen py-2 pt-5">
 
-            <button onClick={onClick} className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={onClick} disabled={isButtonDisabled} className={`mt-8 
+            text-white font-bold py-2 px-4 rounded transition-all duration-300 
+            ${isButtonDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`}>
                 <div className="flex items-center">
                     <Image
                         src='kitty_computer.svg'
@@ -80,6 +97,8 @@ export default function HomeClient({ groups = [] }: Props) {
                     />
                 </div>
             </button>
+            {isButtonDisabled && <p className="text-red-500 mt-2">Kitties Are Full. Message Jesse For More.</p>}
+
             <div className="flex flex-wrap md:flex-row gap-4 mt-4 mb-4 justify-center ">
                 <div>
                     <label className="block text-sm font-bold mb-1">Size</label>
