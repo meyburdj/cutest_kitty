@@ -33,7 +33,6 @@ export default function HomeClient({ groups = [] }: Props) {
         const payload = {
             cat_creation, cute_vision
         }
-        console.log('payload', payload)
         const res = await fetch('/api/cats', {
             method: "POST",
             headers: {
@@ -43,8 +42,6 @@ export default function HomeClient({ groups = [] }: Props) {
         });
         if (res) {
             const responseData = await res.json()
-            console.log('responseData', responseData)
-            console.log('responseData.groups[0]', responseData.groups[0])
             setCatGroups([responseData.groups[0], ...catGroups])
             setIsLoading(false)
         }
