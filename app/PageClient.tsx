@@ -9,6 +9,8 @@ interface Cat {
 }
 
 interface Group {
+    cat_creation_prompt: string;
+    cat_vision_prompt: string;
     cats: Cat[];
 }
 
@@ -43,7 +45,7 @@ export default function HomeClient({ groups = [] }: Props) {
             const responseData = await res.json()
             console.log('responseData', responseData)
             console.log('responseData.groups[0]', responseData.groups[0])
-            setCatGroups([...catGroups, responseData.groups[0]])
+            setCatGroups([responseData.groups[0], ...catGroups])
             setIsLoading(false)
         }
     }
@@ -149,11 +151,18 @@ export default function HomeClient({ groups = [] }: Props) {
                 </div>
             </div>
             <div className="flex flex-row flex-wrap justify-center gap-4 mt-8">
-                {catGroups.map(group => (
-                    group.cats.map((cat, index) => (
-                        <CatCard key={index} url={cat.url} score={cat.score} />
-                    )))
-                )}
+                {catGroups.map((group, index) => (
+                    <div key={index} className="my-4 p-4 border-t border-gray-300 w-full">
+                        <div className="text-center font-bold text-lg">Group: {catGroups.length - index}</div>
+                        <div>Prompt for Creation: {group.cat_creation_prompt}</div>
+                        <div>Prompt for Vision: {group.cat_vision_prompt}</div>
+                        <div className="flex flex-row flex-wrap justify-center gap-4 mt-8">
+                            {group.cats.map((cat, catIndex) => (
+                                <CatCard key={catIndex} url={cat.url} score={cat.score} />
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     )

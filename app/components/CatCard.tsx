@@ -7,7 +7,7 @@ interface CatCardProps {
 
 const CatCard: React.FC<CatCardProps> = ({ url, score }) => {
     return (
-        <div className="flex flex-col items-center p-4 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
+        <div className="flex flex-col items-center p-4 shadow-lg rounded-lg">
             <Image
                 src={url}
                 width={250}
